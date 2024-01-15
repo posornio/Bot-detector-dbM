@@ -38,7 +38,7 @@ def get_person():
 def create_person():
     account = request.get_json()
     print(account)
-    data, count = supabase.table('Accounts').insert({ "id": account.get('username'),"predict": 1, "call": 0, "last_predict": datetime.now().strftime("%Y-%m-%d")}).execute()
+    data, count = supabase.table('Accounts').insert({ "id": account.get('username'),"predict": account.get('predict'), "call": 1, "last_predict": datetime.now().strftime("%Y-%m-%d")}).execute()
     return 'ok'
 
 @app.route("/accountCall/", methods=['PATCH'])
