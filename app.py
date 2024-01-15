@@ -26,6 +26,7 @@ def get_persons():
     persons = supabase.table('Accounts').select('*').execute().model_dump_json()
     persons_data = json.loads(persons).get('data')
     return persons_data
+
 @app.route("/account/", methods=['GET'])
 def get_person():
     username = request.args.get('username')
@@ -47,10 +48,18 @@ def update_call():
     print(callSb)
     supabase.table('Accounts').update({"call": callSb +1}).eq('id', username).execute()
     return 'ok'
+
 @app.route("/accountDate/", methods=['PATCH'])
 def update_person():
     username = request.args.get('username')
     supabase.table('Accounts').update({"last_predict": datetime.now().strftime("%Y-%m-%d")}).eq('id', username).execute()
+    return 'ok'
+
+@app.route("/accountPredict/", methods=['PATCH'])
+def update_predict():
+    username = request.args.get('username')
+    predict = request.args.get('predict')
+    supabase.table('Accounts').update({"predict": predict,"last_predict": datetime.now().strftime("%Y-%m-%d") }).eq('id', username).execute()
     return 'ok'
 
 
