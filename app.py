@@ -21,19 +21,6 @@ class account(BaseModel):
     
 app = Flask(__name__)
 
-
-@app.route('/')
-def index():
-   print('Request for index page received')
-   return render_template('index.html')
-
-@app.route('/favicon.ico')
-def favicon():
-    return send_from_directory(os.path.join(app.root_path, 'static'),
-                               'favicon.ico', mimetype='image/vnd.microsoft.icon')
-
-
-
 @app.route("/all", methods=['GET'])
 def get_persons():
     persons = supabase.table('Accounts').select('*').execute().model_dump_json()
