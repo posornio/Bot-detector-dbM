@@ -58,8 +58,10 @@ def update_person():
 @app.route("/accountPredict/", methods=['PATCH'])
 def update_predict():
     username = request.args.get('username')
+    callSb = supabase.table('Accounts').select('call').eq('id', username).execute().data[0]['call']
+
     predict = request.args.get('predict')
-    supabase.table('Accounts').update({"predict": predict,"last_predict": datetime.now().strftime("%Y-%m-%d") }).eq('id', username).execute()
+    supabase.table('Accounts').update({"predict": predict,"call": callSb +1,"last_predict": datetime.now().strftime("%Y-%m-%d") }).eq('id', username).execute()
     return 'ok'
 
 
