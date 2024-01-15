@@ -18,7 +18,7 @@ class account(BaseModel):
     predict: int
     call: int
     
-
+    
 app = Flask(__name__)
 
 
