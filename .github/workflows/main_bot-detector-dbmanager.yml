@@ -49,7 +49,9 @@ jobs:
     environment:
       name: 'Production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
-    
+    permissions:
+      id-token: write #This is required for requesting the JWT
+
     steps:
       - name: Download artifact from build job
         uses: actions/download-artifact@v3
@@ -60,10 +62,17 @@ jobs:
         run: unzip release.zip
 
       
+      - name: Login to Azure
+        uses: azure/login@v1
+        with:
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_CF4F17DFBCE4498AA529A0A860B3F538 }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_4BD163F24A5C48ABB78E24BF961C022A }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_F2973CA87FE84C01AB3CA3D69F64CD76 }}
+
       - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v2
         id: deploy-to-webapp
         with:
           app-name: 'Bot-Detector-DBmanager'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_BEEE35708935465B87A017CC7B3E5E37 }}
+          
